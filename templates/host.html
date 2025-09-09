@@ -1,48 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Host - Crear partida</title>
-  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <meta charset="utf-8">
+  <title>Host - Impostors</title>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
 <body>
-  <h1>Crear Partida</h1>
-  <button onclick="crearPartida()">Crear</button>
-  <p id="codigo"></p>
-  <h2>Jugadores:</h2>
-  <ul id="lista"></ul>
-  <button onclick="iniciarPartida()">Iniciar</button>
+  <h1>Crear partida (Host)</h1>
+  <input id="nombreHost" placeholder="Tu nombre">
+  <button id="btnCrear">Crear partida</button>
+  <p id="codigoPartida"></p>
 
-  <script>
-    const socket = io();
+  <h2>Jugadores conectados</h2>
+  <ul id="listaJugadores"></ul>
+  <button id="btnIniciar" style="display:none">Iniciar Partida</button>
 
-    function crearPartida() {
-      socket.emit("crear_partida", { host: "Host1" });
-    }
+<script>
+const socket = io();
 
-    socket.on("partida_creada", (data) => {
-      document.getElementById("codigo").innerText = "Código: " + data.codigo;
-      window.localStorage.setItem("codigo", data.codigo);
-    });
+const btnCrear = document.getElementById('btnCrear');
+const nombreHost = document.getElementById('nombreHost');
+const codigoPartidaP = document.getElementById('codigoPartida');
+const listaJugadores = document.getElementById('listaJugadores');
+const btnIniciar = document.getElementById('btnIniciar');
 
-    socket.on("jugadores_actualizados", (data) => {
-      const lista = document.getElementById("lista");
-      lista.innerHTML = "";
-      data.jugadores.forEach(j => {
-        const li = document.createElement("li");
-        li.innerText = j;
-        lista.appendChild(li);
-      });
-    });
+let codigoActual = '';
 
-    function iniciarPartida() {
-      const codigo = window.localStorage.getItem("codigo");
-      socket.emit("iniciar_partida", { codigo });
-    }
+btnCrear.addEventListener('click', ()=>{
+  const host = nombreHost.value || 'Host';
+  socket.emit('crear_partida', { host });
+});
 
-    socket.on("partida_iniciada", () => {
-      alert("La partida ha comenzado!");
-    });
-  </script>
+socket.on('partida_creada', (data)=>{
+  codigoActual = data.codigo;
+  codigoPartidaP.innerText = `Código de partida: ${codigoActual}`;
+  btnIniciar.style.display = 'inline';
+});
+
+socket.on('jugadores_actualizados', (data)=>{
+  listaJugadores.innerHTML = '';
+  data.jugadores.forEach(j=>{
+    const li = document.createElement('li');
+    li.innerText = j;
+    listaJugadores.appendChild(li);
+  });
+});
+
+btnIniciar.addEventListener('click', ()=>{
+  if(!codigoActual) return alert('Crea primero una partida');
+  socket.emit('iniciar_partida', { codigo: codigoActual });
+});
+
+socket.on('partida_iniciada', ()=>{
+  alert('La partida comenzó!');
+});
+</script>
 </body>
 </html>
