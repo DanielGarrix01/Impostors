@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Host - Impostors</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Crear partida</h1>
+    <input type="text" id="nombreHost" placeholder="Tu nombre">
+    <button id="btnCrear">Crear partida</button>
+    <p id="codigoPartida"></p>
+
+    <h2>Jugadores conectados:</h2>
+    <ul id="listaJugadores"></ul>
+    <button id="btnIniciar" style="display:none;">Iniciar Partida</button>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
