@@ -3,6 +3,8 @@ from flask_socketio import SocketIO, emit, join_room
 import random
 import string
 import os
+import eventlet
+import eventlet.wsgi
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -58,4 +60,6 @@ def iniciar_partida(data):
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    socketio.run(app, host="0.0.0.0", port=port)
+    # Ejecutar el servidor con eventlet (producción)
+    eventlet.wsgi.server(eventlet.listen(('0.0.0.0', port)), app)
+
