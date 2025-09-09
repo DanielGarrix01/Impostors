@@ -1,18 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Jugador - Impostors</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Jugador - Unirse a partida</title>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 </head>
 <body>
-    <h1>Unirse a partida</h1>
-    <input type="text" id="nombreJugador" placeholder="Tu nombre">
-    <input type="text" id="codigoPartida" placeholder="Código de partida">
-    <button id="btnUnirse">Unirse</button>
-    <p id="mensaje"></p>
+  <h1>Unirse a partida</h1>
+  <input id="nombre" placeholder="Tu nombre">
+  <input id="codigo" placeholder="Código de la partida">
+  <button onclick="unirse()">Unirse</button>
 
-    <script src="/static/script.js"></script>
+  <p id="status"></p>
+
+  <script>
+    const socket = io();
+
+    function unirse() {
+      const nombre = document.getElementById("nombre").value;
+      const codigo = document.getElementById("codigo").value;
+      socket.emit("unirse_partida", { nombre, codigo });
+    }
+
+    socket.on("unido", (data) => {
+      if (data.status === "ok") {
+        document.getElementById("status").innerText = "Te uniste a la partida!";
+      } else {
+        document.getElementById("status").innerText = "Error: " + data.mensaje;
+      }
+    });
+
+    socket.on("partida_iniciada", () => {
+      alert("La partida ha comenzado!");
+    });
+  </script>
 </body>
 </html>

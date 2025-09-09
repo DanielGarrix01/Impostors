@@ -1,21 +1,48 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Host - Impostors</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Host - Crear partida</title>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 </head>
 <body>
-    <h1>Crear partida</h1>
-    <input type="text" id="nombreHost" placeholder="Tu nombre">
-    <button id="btnCrear">Crear partida</button>
-    <p id="codigoPartida"></p>
+  <h1>Crear Partida</h1>
+  <button onclick="crearPartida()">Crear</button>
+  <p id="codigo"></p>
+  <h2>Jugadores:</h2>
+  <ul id="lista"></ul>
+  <button onclick="iniciarPartida()">Iniciar</button>
 
-    <h2>Jugadores conectados:</h2>
-    <ul id="listaJugadores"></ul>
-    <button id="btnIniciar" style="display:none;">Iniciar Partida</button>
+  <script>
+    const socket = io();
 
-    <script src="/static/script.js"></script>
+    function crearPartida() {
+      socket.emit("crear_partida", { host: "Host1" });
+    }
+
+    socket.on("partida_creada", (data) => {
+      document.getElementById("codigo").innerText = "Código: " + data.codigo;
+      window.localStorage.setItem("codigo", data.codigo);
+    });
+
+    socket.on("jugadores_actualizados", (data) => {
+      const lista = document.getElementById("lista");
+      lista.innerHTML = "";
+      data.jugadores.forEach(j => {
+        const li = document.createElement("li");
+        li.innerText = j;
+        lista.appendChild(li);
+      });
+    });
+
+    function iniciarPartida() {
+      const codigo = window.localStorage.getItem("codigo");
+      socket.emit("iniciar_partida", { codigo });
+    }
+
+    socket.on("partida_iniciada", () => {
+      alert("La partida ha comenzado!");
+    });
+  </script>
 </body>
 </html>
