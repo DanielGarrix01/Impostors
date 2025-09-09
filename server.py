@@ -60,6 +60,5 @@ def iniciar_partida(data):
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    # Ejecutar el servidor con eventlet (producción)
-    eventlet.wsgi.server(eventlet.listen(('0.0.0.0', port)), app)
+    socketio.run(app, host="0.0.0.0", port=port, debug=False)
 
