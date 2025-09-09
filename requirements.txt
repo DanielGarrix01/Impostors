@@ -1,27 +1,28 @@
-# --- Framework principal ---
-Flask==2.3.3          # Framework web ligero
+# Flask web framework
+Flask==2.3.3
 
-# --- WebSockets para comunicación en tiempo real ---
-Flask-SocketIO==5.5.1 # Extensión para Flask que permite WebSockets
-python-socketio==5.13.0 # Dependencia de Flask-SocketIO
-python-engineio==4.12.2 # Motor de SocketIO
-eventlet==0.33.3       # Servidor asincrónico para SocketIO
+# SocketIO para Flask
+Flask-SocketIO==5.5.1
 
-# --- Utilidades ---
-Jinja2==3.1.6          # Motor de plantillas usado por Flask
-MarkupSafe==3.0.2      # Dependencia de Jinja2 para manejar caracteres seguros
-Werkzeug==3.1.3        # Servidor WSGI y utilidades de Flask
-click==8.2.1           # Herramientas de línea de comandos para Flask
-itsdangerous==2.2.0    # Para firmar cookies y otros datos
-blinker==1.9.0         # Sistema de señales para Flask
+# Dependencias de SocketIO
+python-socketio==5.13.0
+python-engineio==4.12.2
 
-# --- Red y compatibilidad ---
-simple-websocket==1.1.0 # Soporte WebSocket simple para python-engineio
-wsproto==1.2.0          # Protocolo de transporte para websockets
-dnspython==2.8.0        # Resolver nombres de dominio si lo necesitas
+# Eventlet para manejo asíncrono
+eventlet==0.33.3
 
-# --- Compatibilidad con Python 3.13 ---
-setuptools==68.0.0      # Para suplir distutils en Python 3.13
-greenlet==3.2.4         # Soporte de hilos verdes para eventlet
-six==1.17.0             # Compatibilidad Python 2 y 3
-bidict==0.23.1          # Diccionarios bidireccionales para python-socketio
+# Librerías extra necesarias
+Jinja2==3.1.6
+MarkupSafe==3.0.2
+Werkzeug==3.1.3
+click==8.2.1
+itsdangerous==2.2.0
+dnspython==2.8.0
+greenlet==3.2.4
+six==1.17.0
+bidict==0.23.1
+simple-websocket==1.1.0
+wsproto==1.2.0
+h11==0.16.0
+setuptools==68.0.0
+blinker==1.9.0
